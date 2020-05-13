@@ -1,0 +1,5 @@
+# Configure as mensagens do seu jeito!
+
+timeExpired: '&eVocê demorou demais para efetuar a verificação!'
+completeCaptcha: '&aSua verificação é válida, divirta-se em nosso servidor!'
+wrongCaptcha: '&cSua verificação não é válida, tente novamente.'
