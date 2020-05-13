@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
 
-public final class CaptchaApi {
+public final class CaptchaServiceImpl {
 
-    private static final Captcha captcha = new Captcha() {
+    private static final CaptchaService CAPTCHA_SERVICE = new CaptchaService() {
 
         private final Map<Player, Long> captchaMap = new ConcurrentHashMap<>();
 
@@ -43,26 +43,26 @@ public final class CaptchaApi {
     };
 
     public static Collection<Player> getPlayersInCaptcha() {
-        return captcha.getPlayersInCaptcha();
+        return CAPTCHA_SERVICE.getPlayersInCaptcha();
     }
 
     public static boolean hasPlayerInCaptcha(Player player) {
-        return captcha.hasPlayerInCaptcha(player);
+        return CAPTCHA_SERVICE.hasPlayerInCaptcha(player);
     }
 
     public static long getPlayerCaptchaRemainingTime(Player player) {
-        return captcha.getPlayerCaptchaRemainingTime(player);
+        return CAPTCHA_SERVICE.getPlayerCaptchaRemainingTime(player);
     }
 
     public static void addPlayerToCaptcha(Player player, long seconds) {
-        captcha.addPlayerToCaptcha(player, seconds);
+        CAPTCHA_SERVICE.addPlayerToCaptcha(player, seconds);
     }
 
     public static void setPlayerCaptchaTime(Player player, long seconds) {
-        captcha.setPlayerCaptchaTime(player, seconds);
+        CAPTCHA_SERVICE.setPlayerCaptchaTime(player, seconds);
     }
 
     public static void removePlayerFromCaptcha(Player player) {
-        captcha.removePlayerFromCaptcha(player);
+        CAPTCHA_SERVICE.removePlayerFromCaptcha(player);
     }
 }

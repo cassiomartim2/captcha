@@ -37,8 +37,13 @@ public final class CaptchaListeners implements Listener {
             String title = event.getInventory().getTitle();
 
             if (title.equals("Captcha")) {
-                if (CaptchaApi.hasPlayerInCaptcha(player)) {
-                    Util.createCaptchaInventory(player);
+                if (CaptchaServiceImpl.hasPlayerInCaptcha(player)) {
+                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), new Runnable() {
+                        @Override
+                        public void run() {
+                            Util.createCaptchaInventory(player);
+                        }
+                    }, 20L);
                 }
             }
         }
@@ -48,8 +53,8 @@ public final class CaptchaListeners implements Listener {
     private void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        CaptchaApi.addPlayerToCaptcha(player, 120);
-        if (CaptchaApi.hasPlayerInCaptcha(player)) {
+        CaptchaServiceImpl.addPlayerToCaptcha(player, 20);
+        if (CaptchaServiceImpl.hasPlayerInCaptcha(player)) {
             Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), new Runnable() {
                 @Override
                 public void run() {
@@ -62,19 +67,19 @@ public final class CaptchaListeners implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     private void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        CaptchaApi.removePlayerFromCaptcha(player);
+        CaptchaServiceImpl.removePlayerFromCaptcha(player);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     private void onSecondEvent(TimeSecondEvent event) {
-        CaptchaApi.getPlayersInCaptcha().forEach(player -> {
-            long remaingTime = CaptchaApi.getPlayerCaptchaRemainingTime(player);
+        CaptchaServiceImpl.getPlayersInCaptcha().forEach(player -> {
+            long remaingTime = CaptchaServiceImpl.getPlayerCaptchaRemainingTime(player);
 
             if (remaingTime <= 0) {
                 player.closeInventory();
                 player.kickPlayer(Util.getTimeExpiredMessage());
             } else {
-                CaptchaApi.setPlayerCaptchaTime(player, remaingTime - 1);
+                CaptchaServiceImpl.setPlayerCaptchaTime(player, remaingTime - 1);
             }
         });
     }
@@ -82,7 +87,7 @@ public final class CaptchaListeners implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     private void onPlayerCaptchaComplete(PlayerCaptchaCompleteEvent event) {
         Player player = event.getPlayer();
-        CaptchaApi.removePlayerFromCaptcha(player);
+        CaptchaServiceImpl.removePlayerFromCaptcha(player);
 
         player.closeInventory();
         player.sendMessage(Util.getCompleteMessage());

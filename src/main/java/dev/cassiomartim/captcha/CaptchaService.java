@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.entity.Player;
 
-public interface Captcha {
+public interface CaptchaService {
 
     public Collection<Player> getPlayersInCaptcha();
 
